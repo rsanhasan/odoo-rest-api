@@ -61,7 +61,7 @@ class Serializer(object):
             return {
                 field_name: rec[field_name].strftime("%H-%M-%S")
             }
-        elif field_type == "binary" and rec[field_name]:
+        elif field_type == "binary" and isinstance(rec[field_name], bytes) and rec[field_name]:
             return {field_name: rec[field_name].decode("utf-8")}
         else:
             return {field_name: rec[field_name]}
@@ -130,7 +130,7 @@ class Serializer(object):
                     parsed_query['include']
                 )
                 fields = chain(parsed_query['include'], all_fields)
-                parsed_query['include'] = reversed(list(fields))
+                parsed_query['include'] = list(fields)
 
             for field in parsed_query["include"]:
                 if isinstance(field, dict):
